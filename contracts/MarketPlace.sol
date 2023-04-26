@@ -5,16 +5,16 @@ import "./IERC721.sol";
 import "./IERC20.sol";
 
 contract MarketPlace {
-    address private marketPlaceOwner;
-    mapping(address => mapping(uint256 => info)) private TokensOnSale;
-    uint8 public feeCharge = 55;
-    uint8 public decimals = 2;
     struct info {
         uint256 price;
         uint256 numberOfTokens;
         address tokenOwner;
         address exchangeAcceptedAddress;
     }
+    address private marketPlaceOwner;
+    uint8 public feeCharge = 55;
+    uint8 public decimals = 2;
+    mapping(address => mapping(uint256 => info)) private TokensOnSale;
     address[] buyersToken;
     event SellToken(
         address indexed _seller,
@@ -121,7 +121,7 @@ contract MarketPlace {
 
         uint256 priceOfToken = TokensOnSale[_tokenAddress][_id].price *
             _numberOfTokens;
-        uint256 finalAmount = priceOfToken + ((priceOfToken) / (10 ** 2)) * 55;
+        uint256 finalAmount = priceOfToken + ((priceOfToken) / (10 ** decimals)) * feeCharge;
 
         if (
             TokensOnSale[_tokenAddress][_id].exchangeAcceptedAddress !=
@@ -169,7 +169,7 @@ contract MarketPlace {
         );
 
         uint256 priceOfToken = TokensOnSale[_tokenAddress][_id].price;
-        uint256 finalAmount = priceOfToken + ((priceOfToken) / (10 ** 2)) * 55;
+        uint256 finalAmount = priceOfToken + ((priceOfToken) / (10 ** decimals)) * feeCharge;
 
         if (
             TokensOnSale[_tokenAddress][_id].exchangeAcceptedAddress !=
